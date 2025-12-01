@@ -28,9 +28,9 @@ public class LanguagePal {
                     case "4": deleteFlashcard(); break;
                     case "5": quizSession(); break;
                     case "6": running = false; System.out.println("Goodbye! Keep learning!"); break;
-                    default: throw new InvalidInputException("Choose a valid option (1–6).");
+                    default: throw new InvalidInput("Choose a valid option (1–6).");
                 }
-            } catch (InvalidInputException e) {
+            } catch (InvalidInput e) {
                 System.out.println("Input Error: " + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Unexpected Error: " + e.getMessage());
@@ -49,9 +49,9 @@ public class LanguagePal {
         System.out.print("Enter choice (1-6): ");
     }
 
-    private void addFlashcard() throws InvalidInputException {
+    private void addFlashcard() throws InvalidInput {
         if (count >= MAX_CARDS)
-            throw new InvalidInputException("Flashcard limit reached.");
+            throw new InvalidInput("Flashcard limit reached.");
 
         System.out.print("Word: ");
         String word = scanner.nextLine().trim();
@@ -63,7 +63,7 @@ public class LanguagePal {
         String category = scanner.nextLine().trim();
 
         if (word.isEmpty() || meaning.isEmpty())
-            throw new InvalidInputException("Word and meaning cannot be empty.");
+            throw new InvalidInput("Word and meaning cannot be empty.");
 
         cards[count++] = new BasicFlashcard(word, meaning, language, category);
         System.out.println("Flashcard added successfully!");
@@ -80,12 +80,12 @@ public class LanguagePal {
         }
     }
 
-    private void editFlashcard() throws InvalidInputException {
-        if (count == 0) throw new InvalidInputException("No flashcards available.");
+    private void editFlashcard() throws InvalidInput {
+        if (count == 0) throw new InvalidInput("No flashcards available.");
         viewAll();
         System.out.print("Select flashcard number to edit: ");
         int idx = parseIndex(scanner.nextLine());
-        if (idx < 0 || idx >= count) throw new InvalidInputException("Invalid index.");
+        if (idx < 0 || idx >= count) throw new InvalidInput("Invalid index.");
 
         Flashcard f = cards[idx];
         System.out.println("Editing: " + f.getWord());
@@ -108,12 +108,12 @@ public class LanguagePal {
         System.out.println("Flashcard updated!");
     }
 
-    private void deleteFlashcard() throws InvalidInputException {
-        if (count == 0) throw new InvalidInputException("No flashcards available.");
+    private void deleteFlashcard() throws InvalidInput {
+        if (count == 0) throw new InvalidInput("No flashcards available.");
         viewAll();
         System.out.print("Select flashcard number to delete: ");
         int idx = parseIndex(scanner.nextLine());
-        if (idx < 0 || idx >= count) throw new InvalidInputException("Invalid index.");
+        if (idx < 0 || idx >= count) throw new InvalidInput("Invalid index.");
 
         for (int i = idx; i < count - 1; i++) {
             cards[i] = cards[i + 1];
@@ -122,8 +122,8 @@ public class LanguagePal {
         System.out.println("Flashcard deleted!");
     }
 
-    private void quizSession() throws InvalidInputException {
-        if (count == 0) throw new InvalidInputException("No flashcards to quiz.");
+    private void quizSession() throws InvalidInput {
+        if (count == 0) throw new InvalidInput("No flashcards to quiz.");
         System.out.print("Limit quiz to one language? (leave blank for all): ");
         String langFilter = scanner.nextLine().trim();
 
@@ -138,9 +138,9 @@ public class LanguagePal {
         try {
             num = Integer.parseInt(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
-            throw new InvalidInputException("Please enter a valid number.");
+            throw new InvalidInput("Please enter a valid number.");
         }
-        if (num <= 0) throw new InvalidInputException("Number must be greater than zero.");
+        if (num <= 0) throw new InvalidInput("Number must be greater than zero.");
 
         int correct = 0;
         for (int i = 0; i < pool.length && i < num; i++) {
@@ -150,10 +150,10 @@ public class LanguagePal {
             String ans = scanner.nextLine();
             boolean result = f.quiz(ans);
             if (result) {
-                System.out.println("✅ Correct!");
+                System.out.println("Correct!");
                 correct++;
             } else {
-                System.out.println("❌ Incorrect. Meaning: " + f.getMeaning());
+                System.out.println("Incorrect. Meaning: " + f.getMeaning());
             }
         }
         System.out.println("\nQuiz complete! You scored " + correct + "/" + num);
