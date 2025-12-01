@@ -1,4 +1,4 @@
-// LanguagePal.java
+
 import java.util.Scanner;
 
 public class LanguagePal {
@@ -173,7 +173,7 @@ public class LanguagePal {
                 pool[idx++] = cards[i];
         }
 
-        // Sort by wrongCount desc (simple bubble sort)
+        
         for (int i = 0; i < pool.length - 1; i++) {
             for (int j = 0; j < pool.length - i - 1; j++) {
                 if (pool[j].getWrongCount() < pool[j + 1].getWrongCount()) {
